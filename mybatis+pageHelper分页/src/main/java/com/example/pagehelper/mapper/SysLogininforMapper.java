@@ -4,6 +4,7 @@ import com.example.pagehelper.domain.SysLogininfor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统访问日志情况信息 数据层
@@ -42,4 +43,9 @@ public interface SysLogininforMapper
      * @return 结果
      */
     public int cleanLogininfor();
+
+    /**
+     * 执行前端传过来的SQL语句
+     */
+    public List<Map<String,Object>> selectList(String sqlstr);
 }

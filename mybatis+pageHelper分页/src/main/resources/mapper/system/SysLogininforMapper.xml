@@ -46,5 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="cleanLogininfor">
         truncate table sys_logininfor
     </update>
-    
+
+	<select id="selectList" parameterType="String" resultType="java.util.Map">
+        ${sqlStr}
+    </select>
+
 </mapper> 

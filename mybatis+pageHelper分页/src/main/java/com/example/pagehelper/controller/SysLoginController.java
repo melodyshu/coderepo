@@ -1,5 +1,6 @@
 package com.example.pagehelper.controller;
 
+import com.example.pagehelper.domain.SqlBean;
 import com.example.pagehelper.domain.SysLogininfor;
 import com.example.pagehelper.mapper.SysLogininforMapper;
 import com.example.pagehelper.page.PageDomain;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: huangzhimao
@@ -25,11 +27,22 @@ public class SysLoginController extends BaseController{
     private SysLogininforMapper logininforMapper;
 
     @GetMapping("/list")
-    @ResponseBody
     public TableDataInfo list(SysLogininfor logininfor)
     {
         startPage();
+
         List<SysLogininfor> list = logininforMapper.selectLogininforList(logininfor);
+        TableDataInfo dataTable = getDataTable(list);
+        return dataTable;
+    }
+
+    @PostMapping("/sql")
+    @ResponseBody
+    public TableDataInfo sqlList(@RequestBody SqlBean sqlBean)
+    {
+        startPage();
+        String sqlstr = sqlBean.getSqlstr();
+        List<Map<String, Object>>  list= logininforMapper.selectList(sqlstr);
         TableDataInfo dataTable = getDataTable(list);
         return dataTable;
     }
