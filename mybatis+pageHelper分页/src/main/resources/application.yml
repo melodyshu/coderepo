@@ -15,3 +15,7 @@ mybatis:
 pagehelper:
   helperDialect: mysql
   reasonable: true
+
+logging:
+  level:
+    com.example: debug
