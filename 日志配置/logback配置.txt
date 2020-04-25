@@ -1,0 +1,65 @@
+
+日志级别:
+TRACE < DEBUG < INFO <  WARN < ERROR
+TRACE 级别最小，打印信息最为详细
+DEBUG
+INFO
+WARN
+ERROR 级别最大，打印信息最为简略
+
+LevelFilter： 
+ch.qos.logback.classic.filter.LevelFilter
+级别过滤器，根据日志级别进行过滤。
+如果日志级别等于配置级别，过滤器会根据onMath 和 onMismatch接收或拒绝日志。有以下子节点：
+
+<level>:设置过滤级别
+
+<onMatch>:用于配置符合过滤条件的操作
+
+<onMismatch>:用于配置不符合过滤条件的操作
+
+ThresholdFilter： 
+ch.qos.logback.classic.filter.ThresholdFilter
+临界值过滤器，过滤掉低于指定临界值的日志。
+当日志级别等于或高于临界值时，过滤器返回NEUTRAL；当日志级别低于临界值时，日志会被拒绝。
+
+例如：过滤掉所有低于INFO级别的日志。
+
+<!--控制台打印小于INFO级别的日志,即打印INFO,WARN,ERROR-->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${log.colorPattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<!--文件过滤掉小于INFO级别的日志,即记录INFO,WARN,ERROR-->
+	<appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.path}/info/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<MaxHistory>${log.maxHistory}</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<!--文件只记录ERROR级别的日志-->
+	<appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.path}/error/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
