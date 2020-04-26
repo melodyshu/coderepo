@@ -1,0 +1,79 @@
+问题:
+一个字符串里面含有多个SQL,以分号;分割,需要分别提取出来,SQL本身可能含有分号。
+例子:
+insert into table mytest values(100,'abcd');insert into table mytest values(100,'888;;;;cd');
+需要能正确提取为:
+insert into table mytest values(100,'abcd')
+insert into table mytest values(100,'888;;;;cd')
+
+使用hive原生代码:
+<dependency>
+   <groupId>org.apache.hive</groupId>
+   <artifactId>hive-cli</artifactId>
+   <version>3.1.0</version>
+</dependency>
+
+private List<String> processSQL(String sqlId, String sql) throws Exception {
+        List<String> sqlList = null;
+        try {
+            sqlList = CliDriver.splitSemiColon(sql);
+            List<String> newList=new ArrayList<>();
+            for (String line : sqlList) {
+                line= line.trim();
+                if (!("".equals(line))){
+                    newList.add(line);
+                }
+            }
+            logger.info("sqlId:{},提取成功.", sqlId);
+            //验证语法
+            checkSyntax(sqlId, newList);
+            return newList;
+        } catch (Exception e) {
+            String errorBase = "sqlId:" + sqlId + ",处理失败.";
+            String error = errorBase + e.toString();
+            logger.error(error);
+            throw new Exception(errorBase + e.getMessage());
+        }
+    }
+    
+public static List<String> splitSemiColon(String line) {
+    boolean insideSingleQuote = false;
+    boolean insideDoubleQuote = false;
+    boolean escape = false;
+    int beginIndex = 0;
+    List<String> ret = new ArrayList<>();
+    for (int index = 0; index < line.length(); index++) {
+      if (line.charAt(index) == '\'') {
+        // take a look to see if it is escaped
+        if (!escape) {
+          // flip the boolean variable
+          insideSingleQuote = !insideSingleQuote;
+        }
+      } else if (line.charAt(index) == '\"') {
+        // take a look to see if it is escaped
+        if (!escape) {
+          // flip the boolean variable
+          insideDoubleQuote = !insideDoubleQuote;
+        }
+      } else if (line.charAt(index) == ';') {
+        if (insideSingleQuote || insideDoubleQuote) {
+          // do not split
+        } else {
+          // split, do not include ; itself
+          ret.add(line.substring(beginIndex, index));
+          beginIndex = index + 1;
+        }
+      } else {
+        // nothing to do
+      }
+      // set the escape
+      if (escape) {
+        escape = false;
+      } else if (line.charAt(index) == '\\') {
+        escape = true;
+      }
+    }
+    ret.add(line.substring(beginIndex));
+    return ret;
+  }
+ 
