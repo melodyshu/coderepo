@@ -57,7 +57,6 @@
 
 	<root level="info">
 		<appender-ref ref="file_info"/>
-		<appender-ref ref="file_error"/>
 	</root>
 
 	<root level="error">
