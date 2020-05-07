@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<plugins>
 		<plugin interceptor="com.example.pagehelper.plugin.SqlCostInterceptor"/>
+		<plugin interceptor="com.example.pagehelper.plugin.StmtInterceptor"/>
 	</plugins>
 	
 </configuration>
