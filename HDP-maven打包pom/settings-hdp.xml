@@ -52,7 +52,7 @@ under the License.
    | Default: ${user.home}/.m2/repository
   <localRepository>/path/to/local/repo</localRepository>
   -->
-  <localRepository>F:\\mvnrepos</localRepository>
+  <localRepository>F:\hdpmvnrepos</localRepository>
 
   <!-- interactiveMode
    | This will determine whether maven prompts you when it needs input. If set to false,
@@ -260,20 +260,20 @@ under the License.
     <profile>
       <id>hdp1</id>
       <repositories>
-        <repository>
+        <!--<repository>
              <id>aliyun</id>
              <name>ali nexus</name>
              <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-        </repository>
+        </repository>-->
         <repository>
           <id>Hortonworks</id>
           <name>Hortonworks</name>
-          <url>http://repo.hortonworks.com/content/repositories/releases/</url>
+          <url>http://repo.hortonworks.com/content/repositories/releases</url>
           <releases>
             <enabled>true</enabled>
           </releases>
           <snapshots>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
           </snapshots>
         </repository>
         <repository>
@@ -283,9 +283,10 @@ under the License.
             <enabled>true</enabled>
           </releases>
           <snapshots>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
           </snapshots>
         </repository>
+        
         <repository>
           <id>maven2</id>
           <url>https://repo.maven.apache.org/maven2</url>
@@ -293,7 +294,7 @@ under the License.
             <enabled>true</enabled>
           </releases>
           <snapshots>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
           </snapshots>
         </repository>
       </repositories>
