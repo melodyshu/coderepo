@@ -1,0 +1,17 @@
+基本使用
+创建空对象
+Optional<String> optStr = Optional.empty();
+上面的示例代码调用empty()方法创建了一个空的Optional<String>对象型。
+
+创建对象：不允许为空
+Optional提供了方法of()用于创建非空对象，该方法要求传入的参数不能为空，否则抛NullPointException，示例如下：
+
+Optional<String> optStr = Optional.of(str);  // 当str为null的时候，将抛出NullPointException
+创建对象：允许为空
+如果不能确定传入的参数是否存在null值的可能性，则可以用Optional的ofNullable()方法创建对象，如果入参为null，则创建一个空对象。示例如下：
+
+Optional<String> optStr = Optional.ofNullable(str);  // 如果str是null，则创建一个空对象
+
+
+流式处理
+Optional也提供了两个基本的流式处理：映射和过滤。
