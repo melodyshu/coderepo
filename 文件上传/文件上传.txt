@@ -1,0 +1,49 @@
+
+  @ApiOperation(value = "上传文件到服务器", httpMethod = "POST", notes = "上传文件到服务器")
+  @PostMapping("/uploadResourceToServer")
+  public SwaggerResultUtil uploadResourceToServer(@ModelAttribute @Valid UploadServerDTO requestDTO) {
+    try {
+      return hdfsService.uploadResourceToServer(requestDTO);
+    } catch (RuntimeException e) {
+      log.error("文件上传出错.", e);
+      return SwaggerResultUtil.resultError(Global.INTERNAL_SERVER_ERROR, e.getCause().getMessage());
+    }
+  }
+  
+public SwaggerResultUtil uploadResourceToServer(UploadServerDTO requestDTO) {
+    MultipartFile file = requestDTO.getFile();
+    String resultPath=null;
+    if(file.isEmpty()){
+      return SwaggerResultUtil.resultError(Global.INTERNAL_SERVER_ERROR, "文件不能为空.");
+    }
+    String filePath = requestDTO.getFilePath();
+    File dstFile=FileUtils.getFile(filePath);
+    if(!dstFile.getParentFile().exists()){
+      dstFile.getParentFile().mkdirs();
+    }
+    try {
+      resultPath=dstFile.getCanonicalPath();
+      file.transferTo(dstFile.getCanonicalFile());
+    } catch (IOException e) {
+      throw BizExceptionUtil.buildBizException("文件上传出错.", e);
+    }
+    return SwaggerResultUtil.resultSuccess(resultPath);
+  }
+  
+/**
+ * @Author: huangzhimao
+ * @Date: 2020-05-23
+ */
+@Data
+@ApiModel("上传文件至服务器DTO")
+public class UploadServerDTO {
+
+  @ApiModelProperty(value = "本地文件",required = true)
+  private MultipartFile file;
+
+  @NotBlank
+  @ApiModelProperty(value = "服务器文件",required = true)
+  private String filePath;
+}
+  
+  
