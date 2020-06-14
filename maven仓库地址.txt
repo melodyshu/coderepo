@@ -128,9 +128,31 @@
       <enabled>true</enabled> 
     </releases>  
     <snapshots> 
-      <enabled>false</enabled> 
+      <enabled>true</enabled> 
     </snapshots> 
-  </repository>  
+  </repository>
+  <repository> 
+	      <id>hdp2</id>  
+	      <url>http://repo.hortonworks.com/content/groups/public</url>  
+	      <releases> 
+	        <enabled>true</enabled> 
+	      </releases>  
+	      <snapshots> 
+	        <enabled>true</enabled>  
+	        <updatePolicy>always</updatePolicy> 
+	      </snapshots> 
+  </repository>
+  <repository> 
+	      <id>maven2</id>  
+	      <url>https://repo.maven.apache.org/maven2</url>  
+	      <releases> 
+	        <enabled>true</enabled> 
+	      </releases>  
+	      <snapshots> 
+	        <enabled>true</enabled>  
+	        <updatePolicy>always</updatePolicy> 
+	      </snapshots> 
+  </repository>
   <repository> 
     <id>Cloudera</id>  
     <name>Cloudera</name>  
